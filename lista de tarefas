@@ -1,8 +1,9 @@
-#Lista de tarefas
+# Lista de tarefas
 
-print("Bem-vindo ao app Lista de Tarefas.Escolha sua opção:")
+print("Bem-vindo ao app Lista de Tarefas. Escolha sua opção:")
 
-# Padrão Singleton
+#Padrão Singleton 
+
 class ListaTarefas:
     _instancia = None
 
@@ -13,7 +14,8 @@ class ListaTarefas:
         return cls._instancia
 
 
-# Padrão Estrategy
+#Classes ações da lista
+
 class AdicionarTarefa:
     def executar(self):
         nome = input("Nome da tarefa: ")
@@ -63,9 +65,27 @@ class AlterarStatus:
         print("Status atualizado!")
 
 
-# Menu do aplicativo
+# Abstract Factory 
+class FabricaTarefas:
+    def criar_acao(self, opcao):
+        if opcao == "1":
+            return AdicionarTarefa()
+        elif opcao == "2":
+            return ListarTarefas()
+        elif opcao == "3":
+            return RemoverTarefa()
+        elif opcao == "4":
+            return AlterarStatus()
+        else:
+            return None
+
+
+# Menu do app
+
+fabrica = FabricaTarefas()
+
 while True:
-    print("\n LISTA DE TAREFAS ")
+    print("\n=== LISTA DE TAREFAS ===")
     print("1 - Adicionar tarefa")
     print("2 - Listar tarefas")
     print("3 - Remover tarefa")
@@ -74,14 +94,13 @@ while True:
 
     opcao = input("Escolha: ")
 
-    if opcao == "1":
-        AdicionarTarefa().executar()
-    elif opcao == "2":
-        ListarTarefas().executar()
-    elif opcao == "3":
-        RemoverTarefa().executar()
-    elif opcao == "4":
-        AlterarStatus().executar()
-    elif opcao == "5":
+    if opcao == "5":
         print("Até logo!")
         break
+
+    acao = fabrica.criar_acao(opcao)
+
+    if acao:
+        acao.executar()
+    else:
+        print("Opção inválida!")
